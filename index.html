@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catch Me 😏</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        overflow: hidden;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .page {
+        text-align: center;
+        width: 100%;
+        height: 100vh;
+        padding: 30px;
+    }
+
+    h1 {
+        margin: 20px 0 8px;
+        font-size: clamp(28px, 5vw, 52px);
+    }
+
+    p {
+        margin: 0;
+        opacity: .8;
+        font-size: 18px;
+    }
+
+    #tease {
+        position: fixed;
+        width: min(360px, 65vw);
+        max-height: 55vh;
+        object-fit: cover;
+        border-radius: 18px;
+        box-shadow: 0 12px 40px rgba(0,0,0,.5);
+        cursor: pointer;
+        user-select: none;
+        transition: left .12s ease, top .12s ease, transform .12s ease;
+    }
+
+    #message {
+        position: fixed;
+        bottom: 28px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 16px;
+        opacity: 0;
+        transition: opacity .25s;
+        white-space: nowrap;
+    }
+
+    #message.show { opacity: .9; }
+</style>
+</head>
+<body>
+<div class="page">
+    <h1>Think you can catch me? 😏</h1>
+    <p>Go on… try.</p>
+</div>
+
+<img id="tease" src="tease.jpeg" alt="A little surprise">
+<div id="message">😂 You really thought I'd make this easy?</div>
+
+<script>
+const img = document.getElementById("tease");
+const message = document.getElementById("message");
+
+function moveImage() {
+    const padding = 20;
+    const maxX = window.innerWidth - img.offsetWidth - padding;
+    const maxY = window.innerHeight - img.offsetHeight - padding;
+
+    const x = padding + Math.random() * Math.max(0, maxX - padding);
+    const y = padding + Math.random() * Math.max(0, maxY - padding);
+
+    img.style.left = `${x}px`;
+    img.style.top = `${y}px`;
+    img.style.transform = `rotate(${(Math.random() * 10 - 5).toFixed(1)}deg)`;
+
+    message.classList.add("show");
+    clearTimeout(window.msgTimer);
+    window.msgTimer = setTimeout(() => message.classList.remove("show"), 1400);
+}
+
+img.addEventListener("mouseenter", moveImage);
+img.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    moveImage();
+});
+img.addEventListener("click", moveImage);
+
+window.addEventListener("resize", moveImage);
+
+setTimeout(moveImage, 300);
+</script>
+</body>
+</html>
